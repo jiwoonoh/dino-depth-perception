@@ -1,1 +1,1 @@
-# hotdog-depth-perception
+# dino-depth-perception

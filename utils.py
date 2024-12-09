@@ -164,7 +164,7 @@ def _3d_to_pixel(points_3d, intrins):
     
 def projective_inverse_warp(src_image, depth, pose, intrinsics):
     """
-    Warps the source image to the target frame using depth and pose.
+    Warps the source image to the target frame using depth and pose, and computes valid points.
 
     Args:
         src_image (Tensor): Source image tensor (shape: [B, C, H, W]).
@@ -174,6 +174,7 @@ def projective_inverse_warp(src_image, depth, pose, intrinsics):
 
     Returns:
         warped_image (Tensor): Source image warped to the target frame (shape: [B, C, H, W]).
+        valid_points (Tensor): Boolean tensor indicating valid points (shape: [B, H, W]).
     """
     batch_size, C, H, W = src_image.shape
 
@@ -196,7 +197,7 @@ def projective_inverse_warp(src_image, depth, pose, intrinsics):
 
     # Step 3: Apply pose transformation
     transf_mat = dof_vec_to_matrix(pose)  # [B, 4, 4]
-    cam_coords_homo = torch.cat([cam_coords, torch.ones(batch_size, 1, H*W, device=device)], dim=1)  # [B, 4, H*W]
+    cam_coords_homo = torch.cat([cam_coords, torch.ones(batch_size, 1, H * W, device=device)], dim=1)  # [B, 4, H*W]
     warped_cam_coords_homo = torch.bmm(transf_mat, cam_coords_homo)  # [B, 4, H*W]
     warped_cam_coords = warped_cam_coords_homo[:, :3, :] / warped_cam_coords_homo[:, 3:4, :]  # [B, 3, H*W]
 
@@ -215,7 +216,10 @@ def projective_inverse_warp(src_image, depth, pose, intrinsics):
         src_image, grid, align_corners=False, padding_mode='border'
     )  # [B, C, H, W]
 
-    return warped_image
+    # Step 6: Compute valid points
+    valid_points = (warped_pixel_coords.abs().max(dim=1)[0] <= 1)  # [B, H, W]
+
+    return warped_image, valid_points
 
 
 def compute_smoothness_loss(pred_depth, image):

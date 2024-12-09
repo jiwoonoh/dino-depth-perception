@@ -109,7 +109,7 @@ class BigModel(nn.Module):
                                   sample['image_t1']['processed_image'])
         # print(sample['image_t']['feature_embedding'].shape)
         depth_map = self.decoder(sample['image_t']['feature_embedding'])
-        depth_map = [depth_map]
+        # depth_map = [depth_map]
         return pose_final, depth_map
     
 class BiggerModel(nn.Module):
@@ -125,7 +125,7 @@ class BiggerModel(nn.Module):
         # print(sample['image_t']['feature_embedding'].shape)
         depth_map = self.decoder(sample['image_t']['feature_embedding'],
                                  sample['image_t']['processed_image'])
-        depth_map = [depth_map]
+        # depth_map = [depth_map]
         return pose_final, depth_map
     
 class BigModelUnet(nn.Module):
@@ -142,7 +142,7 @@ class BigModelUnet(nn.Module):
         # depth_map = self.decoder(sample['image_t']['feature_embedding'],
         #                          sample['image_t']['processed_image'])
         depth_map = self.decoder(sample['image_t']['processed_image'])
-        depth_map = [depth_map]
+        # depth_map = [depth_map]
         return pose_final, depth_map
     
 #Panwa

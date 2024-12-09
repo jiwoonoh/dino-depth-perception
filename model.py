@@ -85,5 +85,7 @@ class BigModel(nn.Module):
         pose_final = self.posenet(sample['image_t']['processed_image'], 
                                   sample['image_t1']['processed_image'])
         depth_map = self.decoder(sample['image_t']['feature_embedding'])
-        depth_map = [depth_map]
+        
+        #depth_map = [depth_map]
+        
         return pose_final, depth_map

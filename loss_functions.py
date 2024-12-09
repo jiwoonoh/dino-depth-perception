@@ -43,7 +43,6 @@ def photometric_reconstruction_loss(tgt_img, ref_img, intrinsics, depth, pose,
 
     return l1_loss
 
-
 def smooth_loss(pred_map):
     def gradient(pred):
         D_dy = pred[:, :, 1:] - pred[:, :, :-1]

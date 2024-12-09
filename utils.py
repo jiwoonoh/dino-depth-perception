@@ -176,52 +176,54 @@ def projective_inverse_warp(src_image, depth, pose, intrinsics):
     Warps the source image to the target frame using depth and pose, and computes valid points.
 
     Args:
-        src_image: Source image tensor (shape: [B, H, W, 3]).
-        depth: Depth map for the target view (shape: [B, H, W]).
-        pose: 6-DoF pose parameters (shape: [B, 6]).
-        intrinsics: Camera intrinsics matrix (shape: [B, 3, 3]).
+        src_image (Tensor): Source image tensor (shape: [B, C, H, W]).
+        depth (Tensor): Depth map for the target view (shape: [B, H, W]).
+        pose (Tensor): 6-DoF pose parameters (shape: [B, 6]).
+        intrinsics (Tensor): Camera intrinsics matrix (shape: [B, 3, 3]).
 
     Returns:
-<<<<<<< HEAD
         warped_image (Tensor): Source image warped to the target frame (shape: [B, C, H, W]).
         valid_points (Tensor): Boolean tensor indicating valid points (shape: [B, H, W]).
-=======
-        warped_image: Source image warped to the target frame (shape: [B, H, W, 3]).
->>>>>>> c6658f87b23c71863ec48ad6aac98a9e300d7c47
     """
-    batch_size, img_height, img_width, _ = src_image.shape
+    batch_size, C, H, W = src_image.shape
 
-    # Step 1: Create pixel grid
-    u, v = torch.meshgrid(torch.arange(0, img_width, device=src_image.device),
-                          torch.arange(0, img_height, device=src_image.device))
-    u = u.flatten().float()
-    v = v.flatten().float()
-    pixel_coords = torch.stack([u, v, torch.ones_like(u)], dim=1)  # [HW, 3]
-    pixel_coords = pixel_coords.unsqueeze(0).expand(batch_size, -1, -1)  # [B, HW, 3]
+    # Step 1: Create pixel grid with explicit indexing
+    device = src_image.device
+    u, v = torch.meshgrid(
+        torch.arange(0, W, device=device),
+        torch.arange(0, H, device=device),
+        indexing='xy'  # Specify 'xy' to avoid future warnings
+    )
+    u = u.float().unsqueeze(0).expand(batch_size, -1, -1)  # [B, H, W]
+    v = v.float().unsqueeze(0).expand(batch_size, -1, -1)  # [B, H, W]
+    ones = torch.ones_like(u)  # [B, H, W]
+    pixel_coords = torch.stack([u, v, ones], dim=1)  # [B, 3, H, W]
 
-    # Step 2: Backproject pixels to 3D space
-    cam_coords = pixel_to_3d(pixel_coords, intrinsics)  # [B, HW, 3]
-    cam_coords = cam_coords * depth.view(batch_size, -1, 1)  # Scale by depth
+    # Step 2: Backproject to 3D space
+    depth = depth.unsqueeze(1)  # [B, 1, H, W]
+    cam_coords = torch.bmm(intrinsics, pixel_coords.view(batch_size, 3, -1))  # [B, 3, H*W]
+    cam_coords = cam_coords * depth.view(batch_size, 1, -1)  # [B, 3, H*W]
 
-<<<<<<< HEAD
     # Step 3: Apply pose transformation
     transf_mat = dof_vec_to_matrix(pose)  # [B, 4, 4]
     cam_coords_homo = torch.cat([cam_coords, torch.ones(batch_size, 1, H * W, device=device)], dim=1)  # [B, 4, H*W]
     warped_cam_coords_homo = torch.bmm(transf_mat, cam_coords_homo)  # [B, 4, H*W]
     warped_cam_coords = warped_cam_coords_homo[:, :3, :] / warped_cam_coords_homo[:, 3:4, :]  # [B, 3, H*W]
-=======
-    # Step 3: Apply 6-DoF transformation
-    cam_coords_transformed = step_cloud(cam_coords, pose)  # [B, HW, 3]
->>>>>>> c6658f87b23c71863ec48ad6aac98a9e300d7c47
 
-    # Step 4: Reproject to 2D space
-    pixel_coords_proj = _3d_to_pixel(cam_coords_transformed, intrinsics)  # [B, HW, 3]
-    u_proj = pixel_coords_proj[:, :, 0].view(batch_size, img_height, img_width)
-    v_proj = pixel_coords_proj[:, :, 1].view(batch_size, img_height, img_width)
+    # Step 4: Project back to pixel space
+    warped_pixel_coords = torch.bmm(intrinsics, warped_cam_coords)  # [B, 3, H*W]
+    warped_pixel_coords = warped_pixel_coords[:, :2, :] / warped_pixel_coords[:, 2:3, :]  # [B, 2, H*W]
+    warped_pixel_coords = warped_pixel_coords.view(batch_size, 2, H, W)  # [B, 2, H, W]
+
+    # Normalize grid to [-1, 1]
+    warped_pixel_coords_x = warped_pixel_coords[:, 0, :, :] / (W - 1) * 2 - 1
+    warped_pixel_coords_y = warped_pixel_coords[:, 1, :, :] / (H - 1) * 2 - 1
+    grid = torch.stack([warped_pixel_coords_x, warped_pixel_coords_y], dim=3)  # [B, H, W, 2]
 
     # Step 5: Sample from source image
-    grid = torch.stack([u_proj / img_width * 2 - 1, v_proj / img_height * 2 - 1], dim=-1)  # [B, H, W, 2]
-    warped_image = torch.nn.functional.grid_sample(src_image, grid, align_corners=False)
+    warped_image = F.grid_sample(
+        src_image, grid, align_corners=False, padding_mode='border'
+    )  # [B, C, H, W]
 
     # Step 6: Compute valid points
     valid_points = (warped_pixel_coords.abs().max(dim=1)[0] <= 1)  # [B, H, W]

@@ -5,67 +5,38 @@ from torch import nn
 import torch.nn.functional as F
 from inverse_warp import inverse_warp
 
-
-def photometric_reconstruction_loss(tgt_img, ref_imgs, intrinsics,
-                                    depth, explainability_mask, pose,
+def photometric_reconstruction_loss(tgt_img, ref_img, intrinsics, depth, pose, 
                                     rotation_mode='euler', padding_mode='zeros'):
-    def one_scale(depth, explainability_mask):
-        assert(explainability_mask is None or depth.size()[2:] == explainability_mask.size()[2:])
-        assert(pose.size(1) == len(ref_imgs))
+    """
+    Computes the photometric reconstruction loss between the target and reference images.
 
-        reconstruction_loss = 0
-        b, _, h, w = depth.size()
-        downscale = tgt_img.size(2)/h
+    Args:
+        tgt_img (Tensor): Target image (shape: [B, 3, H, W]).
+        ref_img (Tensor): Reference image (shape: [B, 3, H, W]).
+        intrinsics (Tensor): Camera intrinsics (shape: [B, 3, 3]).
+        depth (Tensor): Depth map for the target view (shape: [B, H, W]).
+        pose (Tensor): Relative pose between target and reference (shape: [B, 6]).
+        rotation_mode (str): Rotation parameterization mode ('euler' or 'matrix').
+        padding_mode (str): Padding mode for `grid_sample` ('zeros' or 'border').
 
-        tgt_img_scaled = F.interpolate(tgt_img, (h, w), mode='area')
-        ref_imgs_scaled = [F.interpolate(ref_img, (h, w), mode='area') for ref_img in ref_imgs]
-        intrinsics_scaled = torch.cat((intrinsics[:, 0:2]/downscale, intrinsics[:, 2:]), dim=1)
+    Returns:
+        loss (Tensor): Photometric reconstruction loss (scalar).
+    """
+    batch_size, _, H, W = tgt_img.shape
 
-        warped_imgs = []
-        diff_maps = []
+    # Reshape depth to [B, 1, H, W] for compatibility
+    depth = depth.unsqueeze(1)  # [B, 1, H, W]
 
-        for i, ref_img in enumerate(ref_imgs_scaled):
-            current_pose = pose[:, i]
+    # Warp the reference image to the target frame
+    ref_img_warped, valid_mask = inverse_warp(
+        ref_img, depth.squeeze(1), pose, intrinsics, rotation_mode, padding_mode
+    )  # ref_img_warped: [B, 3, H, W], valid_mask: [B, H, W]
 
-            ref_img_warped, valid_points = inverse_warp(ref_img, depth[:,0], current_pose,
-                                                        intrinsics_scaled,
-                                                        rotation_mode, padding_mode)
-            diff = (tgt_img_scaled - ref_img_warped) * valid_points.unsqueeze(1).float()
+    # Compute L1 photometric loss
+    diff = (tgt_img - ref_img_warped) * valid_mask.unsqueeze(1).float()  # Masked difference
+    l1_loss = diff.abs().mean()
 
-            if explainability_mask is not None:
-                diff = diff * explainability_mask[:,i:i+1].expand_as(diff)
-
-            reconstruction_loss += diff.abs().mean()
-            assert((reconstruction_loss == reconstruction_loss).item() == 1)
-
-            warped_imgs.append(ref_img_warped[0])
-            diff_maps.append(diff[0])
-
-        return reconstruction_loss, warped_imgs, diff_maps
-
-    warped_results, diff_results = [], []
-    if type(explainability_mask) not in [tuple, list]:
-        explainability_mask = [explainability_mask]
-    if type(depth) not in [list, tuple]:
-        depth = [depth]
-
-    total_loss = 0
-    for d, mask in zip(depth, explainability_mask):
-        loss, warped, diff = one_scale(d, mask)
-        total_loss += loss
-        warped_results.append(warped)
-        diff_results.append(diff)
-    return total_loss, warped_results, diff_results
-
-
-def explainability_loss(mask):
-    if type(mask) not in [tuple, list]:
-        mask = [mask]
-    loss = 0
-    for mask_scaled in mask:
-        ones_var = torch.ones_like(mask_scaled)
-        loss += nn.functional.binary_cross_entropy(mask_scaled, ones_var)
-    return loss
+    return l1_loss
 
 
 def smooth_loss(pred_map):

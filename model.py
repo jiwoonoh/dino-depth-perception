@@ -73,3 +73,16 @@ class DepthDecoder(nn.Module):
         depth_map = self.upsample(x)
         depth_map.squeeze_(dim=1)
         return depth_map
+    
+class BigModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+        
+        self.decoder = DepthDecoder()
+        self.posenet = PoseNet(6)
+        
+    def forward(self, sample):
+        pose_final = self.posenet(sample['image_t']['processed_image'], 
+                                  sample['image_t1']['processed_image'])
+        depth_map = self.decoder(sample['image_t']['feature_embedding'])
+        return pose_final, depth_map

@@ -4,7 +4,7 @@ import random
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torchmetrics import StructuralSimilarityIndexMeasure
+from torchmetrics.image import StructuralSimilarityIndexMeasure
 import numpy as np
 from PIL import Image
 
@@ -177,10 +177,13 @@ def projective_inverse_warp(src_image, depth, pose, intrinsics):
     """
     batch_size, C, H, W = src_image.shape
 
-    # Step 1: Create pixel grid
+    # Step 1: Create pixel grid with explicit indexing
     device = src_image.device
-    u, v = torch.meshgrid(torch.arange(0, W, device=device),
-                          torch.arange(0, H, device=device))
+    u, v = torch.meshgrid(
+        torch.arange(0, W, device=device),
+        torch.arange(0, H, device=device),
+        indexing='xy'  # Specify 'xy' to avoid future warnings
+    )
     u = u.float().unsqueeze(0).expand(batch_size, -1, -1)  # [B, H, W]
     v = v.float().unsqueeze(0).expand(batch_size, -1, -1)  # [B, H, W]
     ones = torch.ones_like(u)  # [B, H, W]
@@ -214,46 +217,6 @@ def projective_inverse_warp(src_image, depth, pose, intrinsics):
 
     return warped_image
 
-# def projective_inverse_warp(src_image, depth, pose, intrinsics):
-#     """
-#     Warps the source image to the target frame using depth and pose.
-
-#     Args:
-#         src_image: Source image tensor (shape: [B, H, W, 3]).
-#         depth: Depth map for the target view (shape: [B, H, W]).
-#         pose: 6-DoF pose parameters (shape: [B, 6]).
-#         intrinsics: Camera intrinsics matrix (shape: [B, 3, 3]).
-
-#     Returns:
-#         warped_image: Source image warped to the target frame (shape: [B, H, W, 3]).
-#     """
-#     batch_size, img_height, img_width, _ = src_image.shape
-
-#     # Step 1: Create pixel grid
-#     u, v = torch.meshgrid(torch.arange(0, img_width, device=src_image.device),
-#                           torch.arange(0, img_height, device=src_image.device))
-#     u = u.flatten().float()
-#     v = v.flatten().float()
-#     pixel_coords = torch.stack([u, v, torch.ones_like(u)], dim=1)  # [HW, 3]
-#     pixel_coords = pixel_coords.unsqueeze(0).expand(batch_size, -1, -1)  # [B, HW, 3]
-
-#     # Step 2: Backproject pixels to 3D space
-#     cam_coords = pixel_to_3d(pixel_coords, intrinsics)  # [B, HW, 3]
-#     cam_coords = cam_coords * depth.view(batch_size, -1, 1)  # Scale by depth
-
-#     # Step 3: Apply 6-DoF transformation
-#     cam_coords_transformed = step_cloud(cam_coords, pose)  # [B, HW, 3]
-
-#     # Step 4: Reproject to 2D space
-#     pixel_coords_proj = _3d_to_pixel(cam_coords_transformed, intrinsics)  # [B, HW, 3]
-#     u_proj = pixel_coords_proj[:, :, 0].view(batch_size, img_height, img_width)
-#     v_proj = pixel_coords_proj[:, :, 1].view(batch_size, img_height, img_width)
-
-#     # Step 5: Sample from source image
-#     grid = torch.stack([u_proj / img_width * 2 - 1, v_proj / img_height * 2 - 1], dim=-1)  # [B, H, W, 2]
-#     warped_image = torch.nn.functional.grid_sample(src_image, grid, align_corners=False)
-
-#     return warped_image
 
 def compute_smoothness_loss(pred_depth, image):
     """
@@ -291,36 +254,59 @@ def compute_smoothness_loss(pred_depth, image):
     
     return smoothness_loss
 
-def compute_loss(pred_depth, pred_poses, tgt_image, src_image_stack, intrinsics, smooth_weight=0.01):
+def compute_loss(pred_depth, pred_poses, tgt_image, src_image_stack, intrinsics, 
+                smooth_weight=0.01, num_source=None, use_ssim=True, ssim_metric=None):
     """
     Computes photometric loss, smoothness loss, and total loss.
 
     Args:
-        pred_depth (List[Tensor]): List of predicted depth maps for different scales (List of tensors [B, H, W]).
-        pred_poses (Tensor): Predicted 6-DoF poses for source frames (Tensor [B, num_source, 6]).
+        pred_depth (List[Tensor]): List of predicted depth maps for different scales 
+                                   (List of tensors [B, 1, H, W]).
+        pred_poses (Tensor): Predicted 6-DoF poses for source frames 
+                             (Tensor [B, num_source, 6] or [B, 6]).
         tgt_image (Tensor): Target image tensor (shape: [B, 3, H, W]).
         src_image_stack (Tensor): Source image stack tensor (shape: [B, 3*num_source, H, W]).
         intrinsics (Tensor): Camera intrinsics matrix (shape: [B, 3, 3]).
+        smooth_weight (float, optional): Weight for the smoothness loss. Defaults to 0.01.
         num_source (int, optional): Number of source images. If None, inferred from pred_poses. Defaults to None.
-        smooth_weight (float, optional): Weight for the smoothness loss. Defaults to 0.1.
+        use_ssim (bool, optional): Whether to include SSIM in photometric loss. Defaults to True.
+        ssim_metric (Metric, optional): Initialized SSIM metric from torchmetrics.image. 
+                                        If None and use_ssim is True, it will be initialized inside.
 
     Returns:
         total_loss (Tensor): Combined loss.
         photometric_loss (Tensor): Photometric loss.
         smoothness_loss (Tensor): Smoothness loss.
     """
-    # Initialize SSIM metric
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    ssim_metric = StructuralSimilarityIndexMeasure(data_range=1.0).to(device)
     photometric_loss = 0.0
     smoothness_loss = 0.0
 
-    # Infer num_source if not provided
+    # Determine num_source based on pred_poses shape if not provided
     if num_source is None:
-        num_source = pred_poses.shape[1]
+        if pred_poses.dim() == 3:
+            num_source = pred_poses.shape[1]
+        elif pred_poses.dim() == 2:
+            num_source = 1
+        else:
+            raise ValueError(f"pred_poses must be a 2D or 3D tensor, but got {pred_poses.dim()}D tensor.")
 
+    # Initialize SSIM metric if needed
+    if use_ssim:
+        if ssim_metric is None:
+            device = tgt_image.device
+            ssim_metric = StructuralSimilarityIndexMeasure(data_range=1.0).to(device)
+
+    # Iterate over each scale
     for s in range(len(pred_depth)):
-        curr_depth = pred_depth[s]  # [B, H, W]
+        curr_depth = pred_depth[s]  # [B, 1, H, W]
+
+        # Print current depth shape
+        print(f"Scale {s}:")
+        print(f"  curr_depth shape: {curr_depth.shape}")  # Should be [B, 1, H, W]
+
+        # Check if depth_map[s] is correctly batched
+        if curr_depth.dim() != 4 or curr_depth.shape[1] != 1:
+            raise ValueError(f"pred_depth[{s}] has incorrect shape: {curr_depth.shape}. Expected [B, 1, H, W].")
 
         # Resize images for the current scale
         scale_factor = 1 / (2 ** s)
@@ -331,17 +317,49 @@ def compute_loss(pred_depth, pred_poses, tgt_image, src_image_stack, intrinsics,
             src_image_stack, scale_factor=scale_factor, mode='bilinear', align_corners=False
         )  # [B, 3*num_source, H', W']
 
-        # Extract the current source image
-        src_image = curr_src_image_stack[:, i*3:(i+1)*3, :, :]  # [B, 3, H', W']
+        # Print shapes to verify alignment
+        print(f"  curr_tgt_image shape: {curr_tgt_image.shape}")
+        print(f"  curr_src_image_stack shape: {curr_src_image_stack.shape}")
 
-        # Warp the source image to the target frame
-        warped_image = projective_inverse_warp(src_image, curr_depth, pred_poses[:, i, :], intrinsics)  # [B, 3, H', W']
+        # Check if depth matches the image dimensions
+        if curr_depth.shape[2:] != curr_tgt_image.shape[2:]:
+            print(f"  Resizing curr_depth from {curr_depth.shape[2:]} to {curr_tgt_image.shape[2:]}")
+            curr_depth = F.interpolate(
+                curr_depth,
+                size=curr_tgt_image.shape[2:],
+                mode='bilinear',
+                align_corners=False
+            )  # [B, 1, H', W']
+            print(f"  Resized curr_depth shape: {curr_depth.shape}")
 
-        # Compute photometric loss (L1 + SSIM)
-        l1_loss = F.l1_loss(warped_image, curr_tgt_image, reduction='mean')  # Scalar
-        ssim_loss = 1 - ssim_metric(warped_image, curr_tgt_image)  # [B]
-        ssim_loss = ssim_loss.mean()  # Scalar
-        photometric_loss += (0.85 * l1_loss + 0.15 * ssim_loss)  # Scalar
+        # Iterate over each source
+        for i in range(num_source):
+            if num_source == 1:
+                # For single source, src_image_stack has shape [B, 3, H', W']
+                src_image = curr_src_image_stack[:, :3, :, :]  # [B, 3, H', W']
+                # For single source, pred_poses has shape [B, 6]
+                pose = pred_poses if pred_poses.dim() == 2 else pred_poses[:, i, :]  # [B, 6]
+            else:
+                # For multiple sources, src_image_stack has shape [B, 3*num_source, H', W']
+                src_image = curr_src_image_stack[:, i*3:(i+1)*3, :, :]  # [B, 3, H', W']
+                # pred_poses has shape [B, num_source, 6]
+                pose = pred_poses[:, i, :]  # [B, 6]
+
+            # Debug: Print pose shape
+            print(f"  Source {i}: pose shape: {pose.shape}")
+
+            # Warp the source image to the target frame
+            warped_image = projective_inverse_warp(src_image, curr_depth.squeeze(1), pose, intrinsics)  # [B, 3, H', W']
+
+            # Compute photometric loss (L1 + SSIM if enabled)
+            l1_loss = F.l1_loss(warped_image, curr_tgt_image, reduction='mean')  # Scalar
+
+            if use_ssim:
+                ssim_loss = 1 - ssim_metric(warped_image, curr_tgt_image)  # [B]
+                ssim_loss = ssim_loss.mean()  # Scalar
+                photometric_loss += (0.85 * l1_loss + 0.15 * ssim_loss)  # Scalar
+            else:
+                photometric_loss += l1_loss  # Scalar
 
         # Compute smoothness loss for the current scale
         smoothness_loss += compute_smoothness_loss(curr_depth, curr_tgt_image)  # Scalar
@@ -350,30 +368,3 @@ def compute_loss(pred_depth, pred_poses, tgt_image, src_image_stack, intrinsics,
     total_loss = photometric_loss + smooth_weight * smoothness_loss  # Scalar
 
     return total_loss, photometric_loss, smoothness_loss
-
-# def compute_ssim(img1, img2):
-#     """
-#     Computes the Structural Similarity (SSIM) index between two images.
-
-#     Args:
-#         img1: First image tensor (shape: [B, 3, H, W]).
-#         img2: Second image tensor (shape: [B, 3, H, W]).
-
-#     Returns:
-#         ssim_map: SSIM map (Tensor [B, 1, H, W]).
-#     """
-#     C1 = 0.01 ** 2
-#     C2 = 0.03 ** 2
-
-#     mu1 = torch.nn.functional.avg_pool2d(img1, 3, 1, padding=1)
-#     mu2 = torch.nn.functional.avg_pool2d(img2, 3, 1, padding=1)
-
-#     sigma1 = torch.nn.functional.avg_pool2d(img1 * img1, 3, 1, padding=1) - mu1 ** 2
-#     sigma2 = torch.nn.functional.avg_pool2d(img2 * img2, 3, 1, padding=1) - mu2 ** 2
-#     sigma12 = torch.nn.functional.avg_pool2d(img1 * img2, 3, 1, padding=1) - mu1 * mu2
-
-#     ssim_num = (2 * mu1 * mu2 + C1) * (2 * sigma12 + C2)
-#     ssim_den = (mu1 ** 2 + mu2 ** 2 + C1) * (sigma1 + sigma2 + C2)
-
-#     ssim_map = ssim_num / ssim_den
-#     return ssim_map.clamp(0, 1)

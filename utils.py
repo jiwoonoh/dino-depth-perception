@@ -108,112 +108,107 @@ def step_cloud(I_t, dof_vec):
     
     return I_t_1
 
-def pixel_to_3d(points, intrins):
+def pixel_to_3d(points, intrinsics):
     """
     Converts pixel coordinates and depth to 3D coordinates.
-    
+
     Args:
-        points: Tensor of shape [B, N, 3], where B is the batch size, N is the number of points,
-                and each point is represented as (u, v, w) where u and v are pixel coordinates and w is depth.
-        intrins: List of intrinsic parameters of the camera.
-    
+        points: Tensor of shape [B, N, 3], representing (u, v, w).
+        intrinsics: Camera intrinsics tensor of shape [B, 3, 3].
+
     Returns:
-        Tensor of shape [B, N, 3] representing the 3D coordinates.
+        Tensor of shape [B, N, 3], representing 3D coordinates.
     """
-    fx = intrins[0][0]
-    fy = intrins[1][1]
-    cx = intrins[0][2]
-    cy = intrins[1][2]
-    
-    u = points[:, :, 0]
-    v = points[:, :, 1]
-    w = points[:, :, 2]
-    
-    x = ((u - cx) * w) / fx
-    y = ((v - cy) * w) / fy
-    z = w
+    fx = intrinsics[:, 0, 0].unsqueeze(1)  # [B, 1]
+    fy = intrinsics[:, 1, 1].unsqueeze(1)  # [B, 1]
+    cx = intrinsics[:, 0, 2].unsqueeze(1)  # [B, 1]
+    cy = intrinsics[:, 1, 2].unsqueeze(1)  # [B, 1]
+
+    u = points[:, :, 0]  # [B, N]
+    v = points[:, :, 1]  # [B, N]
+    w = points[:, :, 2]  # [B, N]
+
+    x = ((u - cx) * w) / fx  # [B, N]
+    y = ((v - cy) * w) / fy  # [B, N]
+    z = w  # Depth remains unchanged
+
+    return torch.stack((x, y, z), dim=2)  # [B, N, 3]
+
     
     return torch.stack((x, y, z), dim=2)
 
-def _3d_to_pixel(points_3d, intrins):
+def _3d_to_pixel(points_3d, intrinsics):
     """
     Converts 3D coordinates to pixel coordinates and depth.
-    
+
     Args:
         points_3d: Tensor of shape [B, N, 3], where B is the batch size, N is the number of points,
-                   and each point is represented as (x, y, z) where x, y, and z are 3D coordinates.
-        intrins: List of intrinsic parameters of the camera.
-    
+                   and each point is represented as (x, y, z).
+        intrinsics: Camera intrinsics tensor of shape [B, 3, 3].
+
     Returns:
-        Tensor of shape [B, N, 3] representing the pixel coordinates and depth.
+        Tensor of shape [B, N, 3] representing the pixel coordinates (u, v) and depth (w).
     """
-    fx = intrins[0][0]
-    fy = intrins[1][1]
-    cx = intrins[0][2]
-    cy = intrins[1][2]
-    
-    x = points_3d[:, :, 0]
-    y = points_3d[:, :, 1]
-    z = points_3d[:, :, 2]
-    
-    u = (x * fx / z) + cx
-    v = (y * fy / z) + cy
-    w = z
-    
-    return torch.stack((u, v, w), dim=2)
+    # Extract intrinsics components
+    fx = intrinsics[:, 0, 0].unsqueeze(1)  # [B, 1]
+    fy = intrinsics[:, 1, 1].unsqueeze(1)  # [B, 1]
+    cx = intrinsics[:, 0, 2].unsqueeze(1)  # [B, 1]
+    cy = intrinsics[:, 1, 2].unsqueeze(1)  # [B, 1]
+
+    # Extract 3D points
+    x = points_3d[:, :, 0]  # [B, N]
+    y = points_3d[:, :, 1]  # [B, N]
+    z = points_3d[:, :, 2]  # [B, N]
+
+    # Prevent division by zero
+    z = torch.clamp(z, min=1e-6)
+
+    # Compute pixel coordinates
+    u = (x * fx) / z + cx  # [B, N]
+    v = (y * fy) / z + cy  # [B, N]
+    w = z  # Depth remains unchanged
+
+    return torch.stack((u, v, w), dim=2)  # [B, N, 3]
+
     
 def projective_inverse_warp(src_image, depth, pose, intrinsics):
     """
     Warps the source image to the target frame using depth and pose.
 
     Args:
-        src_image (Tensor): Source image tensor (shape: [B, C, H, W]).
-        depth (Tensor): Depth map for the target view (shape: [B, H, W]).
-        pose (Tensor): 6-DoF pose parameters (shape: [B, 6]).
-        intrinsics (Tensor): Camera intrinsics matrix (shape: [B, 3, 3]).
+        src_image: Source image tensor (shape: [B, H, W, 3]).
+        depth: Depth map for the target view (shape: [B, H, W]).
+        pose: 6-DoF pose parameters (shape: [B, 6]).
+        intrinsics: Camera intrinsics matrix (shape: [B, 3, 3]).
 
     Returns:
-        warped_image (Tensor): Source image warped to the target frame (shape: [B, C, H, W]).
+        warped_image: Source image warped to the target frame (shape: [B, H, W, 3]).
     """
-    batch_size, C, H, W = src_image.shape
+    batch_size, img_height, img_width, _ = src_image.shape
 
-    # Step 1: Create pixel grid with explicit indexing
-    device = src_image.device
-    u, v = torch.meshgrid(
-        torch.arange(0, W, device=device),
-        torch.arange(0, H, device=device),
-        indexing='xy'  # Specify 'xy' to avoid future warnings
-    )
-    u = u.float().unsqueeze(0).expand(batch_size, -1, -1)  # [B, H, W]
-    v = v.float().unsqueeze(0).expand(batch_size, -1, -1)  # [B, H, W]
-    ones = torch.ones_like(u)  # [B, H, W]
-    pixel_coords = torch.stack([u, v, ones], dim=1)  # [B, 3, H, W]
+    # Step 1: Create pixel grid
+    u, v = torch.meshgrid(torch.arange(0, img_width, device=src_image.device),
+                          torch.arange(0, img_height, device=src_image.device))
+    u = u.flatten().float()
+    v = v.flatten().float()
+    pixel_coords = torch.stack([u, v, torch.ones_like(u)], dim=1)  # [HW, 3]
+    pixel_coords = pixel_coords.unsqueeze(0).expand(batch_size, -1, -1)  # [B, HW, 3]
 
-    # Step 2: Backproject to 3D space
-    depth = depth.unsqueeze(1)  # [B, 1, H, W]
-    cam_coords = torch.bmm(intrinsics, pixel_coords.view(batch_size, 3, -1))  # [B, 3, H*W]
-    cam_coords = cam_coords * depth.view(batch_size, 1, -1)  # [B, 3, H*W]
+    # Step 2: Backproject pixels to 3D space
+    cam_coords = pixel_to_3d(pixel_coords, intrinsics)  # [B, HW, 3]
+    cam_coords = cam_coords * depth.view(batch_size, -1, 1)  # Scale by depth
 
-    # Step 3: Apply pose transformation
-    transf_mat = dof_vec_to_matrix(pose)  # [B, 4, 4]
-    cam_coords_homo = torch.cat([cam_coords, torch.ones(batch_size, 1, H*W, device=device)], dim=1)  # [B, 4, H*W]
-    warped_cam_coords_homo = torch.bmm(transf_mat, cam_coords_homo)  # [B, 4, H*W]
-    warped_cam_coords = warped_cam_coords_homo[:, :3, :] / warped_cam_coords_homo[:, 3:4, :]  # [B, 3, H*W]
+    # Step 3: Apply 6-DoF transformation
+    cam_coords_transformed = step_cloud(cam_coords, pose)  # [B, HW, 3]
 
-    # Step 4: Project back to pixel space
-    warped_pixel_coords = torch.bmm(intrinsics, warped_cam_coords)  # [B, 3, H*W]
-    warped_pixel_coords = warped_pixel_coords[:, :2, :] / warped_pixel_coords[:, 2:3, :]  # [B, 2, H*W]
-    warped_pixel_coords = warped_pixel_coords.view(batch_size, 2, H, W)  # [B, 2, H, W]
-
-    # Normalize grid to [-1, 1]
-    warped_pixel_coords_x = warped_pixel_coords[:, 0, :, :] / (W - 1) * 2 - 1
-    warped_pixel_coords_y = warped_pixel_coords[:, 1, :, :] / (H - 1) * 2 - 1
-    grid = torch.stack([warped_pixel_coords_x, warped_pixel_coords_y], dim=3)  # [B, H, W, 2]
+    # Step 4: Reproject to 2D space
+    pixel_coords_proj = _3d_to_pixel(cam_coords_transformed, intrinsics)  # [B, HW, 3]
+    u_proj = pixel_coords_proj[:, :, 0].view(batch_size, img_height, img_width)
+    v_proj = pixel_coords_proj[:, :, 1].view(batch_size, img_height, img_width)
 
     # Step 5: Sample from source image
-    warped_image = F.grid_sample(
-        src_image, grid, align_corners=False, padding_mode='border'
-    )  # [B, C, H, W]
+    grid = torch.stack([u_proj / img_width * 2 - 1, v_proj / img_height * 2 - 1], dim=-1)  # [B, H, W, 2]
+    warped_image = torch.nn.functional.grid_sample(src_image, grid, align_corners=False)
 
     return warped_image
 
@@ -255,7 +250,7 @@ def compute_smoothness_loss(pred_depth, image):
     return smoothness_loss
 
 def compute_loss(pred_depth, pred_poses, tgt_image, src_image_stack, intrinsics, 
-                smooth_weight=0.01, num_source=None, use_ssim=True, ssim_metric=None):
+                smooth_weight=0.001, num_source=None, use_ssim=True, ssim_metric=None):
     """
     Computes photometric loss, smoothness loss, and total loss.
 
@@ -367,4 +362,4 @@ def compute_loss(pred_depth, pred_poses, tgt_image, src_image_stack, intrinsics,
     # Combine photometric and smoothness loss
     total_loss = photometric_loss + smooth_weight * smoothness_loss  # Scalar
 
-    return total_loss #, photometric_loss, smoothness_loss
+    return photometric_loss #, photometric_loss, smoothness_loss

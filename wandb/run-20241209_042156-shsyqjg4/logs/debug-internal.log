@@ -1,0 +1,18 @@
+{"time":"2024-12-09T04:22:03.805115-05:00","level":"INFO","msg":"using version","core version":"0.18.7"}
+{"time":"2024-12-09T04:22:03.805164-05:00","level":"INFO","msg":"created symlink","path":"/Users/panwapromtep/dino-depth-perception/wandb/run-20241209_042156-shsyqjg4/logs/debug-core.log"}
+{"time":"2024-12-09T04:22:03.923098-05:00","level":"INFO","msg":"created new stream","id":"shsyqjg4"}
+{"time":"2024-12-09T04:22:03.923155-05:00","level":"INFO","msg":"stream: started","id":"shsyqjg4"}
+{"time":"2024-12-09T04:22:03.923168-05:00","level":"INFO","msg":"writer: Do: started","stream_id":"shsyqjg4"}
+{"time":"2024-12-09T04:22:03.923196-05:00","level":"INFO","msg":"handler: started","stream_id":"shsyqjg4"}
+{"time":"2024-12-09T04:22:03.923215-05:00","level":"INFO","msg":"sender: started","stream_id":"shsyqjg4"}
+{"time":"2024-12-09T04:22:06.376411-05:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2024-12-09T04:22:24.489669-05:00","level":"INFO","msg":"api: retrying error","error":"Post \"https://api.wandb.ai/files/panwa/depth-estimation/shsyqjg4/file_stream\": unexpected EOF"}
+{"time":"2024-12-09T04:25:10.255369-05:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2024-12-09T04:25:10.255894-05:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2024-12-09T04:25:11.260577-05:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"updating run config","runtime_seconds":0.152519667}],"total_operations":1}}
+{"time":"2024-12-09T04:25:14.3214-05:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2024-12-09T04:25:15.91426-05:00","level":"INFO","msg":"stream: closing","id":"shsyqjg4"}
+{"time":"2024-12-09T04:25:15.914494-05:00","level":"INFO","msg":"handler: closed","stream_id":"shsyqjg4"}
+{"time":"2024-12-09T04:25:15.914507-05:00","level":"INFO","msg":"writer: Close: closed","stream_id":"shsyqjg4"}
+{"time":"2024-12-09T04:25:15.914554-05:00","level":"INFO","msg":"sender: closed","stream_id":"shsyqjg4"}
+{"time":"2024-12-09T04:25:15.914615-05:00","level":"INFO","msg":"stream: closed","id":"shsyqjg4"}

@@ -1,0 +1,21 @@
+{"time":"2024-12-09T04:20:03.173113-05:00","level":"INFO","msg":"using version","core version":"0.18.7"}
+{"time":"2024-12-09T04:20:03.173144-05:00","level":"INFO","msg":"created symlink","path":"/Users/panwapromtep/dino-depth-perception/wandb/run-20241209_042000-si59k4ph/logs/debug-core.log"}
+{"time":"2024-12-09T04:20:03.282077-05:00","level":"INFO","msg":"created new stream","id":"si59k4ph"}
+{"time":"2024-12-09T04:20:03.282118-05:00","level":"INFO","msg":"stream: started","id":"si59k4ph"}
+{"time":"2024-12-09T04:20:03.282131-05:00","level":"INFO","msg":"sender: started","stream_id":"si59k4ph"}
+{"time":"2024-12-09T04:20:03.282154-05:00","level":"INFO","msg":"writer: Do: started","stream_id":"si59k4ph"}
+{"time":"2024-12-09T04:20:03.282131-05:00","level":"INFO","msg":"handler: started","stream_id":"si59k4ph"}
+{"time":"2024-12-09T04:20:04.578473-05:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2024-12-09T04:20:04.842159-05:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2024-12-09T04:21:54.815154-05:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2024-12-09T04:21:54.829112-05:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2024-12-09T04:21:56.672908-05:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2024-12-09T04:21:56.708589-05:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2024-12-09T04:21:56.708988-05:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2024-12-09T04:21:57.713289-05:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading summary","runtime_seconds":0.458870625},{"desc":"updating run config","runtime_seconds":0.458513125}],"total_operations":2}}
+{"time":"2024-12-09T04:21:58.395805-05:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2024-12-09T04:22:03.800171-05:00","level":"INFO","msg":"stream: closing","id":"si59k4ph"}
+{"time":"2024-12-09T04:22:03.800209-05:00","level":"INFO","msg":"handler: closed","stream_id":"si59k4ph"}
+{"time":"2024-12-09T04:22:03.800235-05:00","level":"INFO","msg":"sender: closed","stream_id":"si59k4ph"}
+{"time":"2024-12-09T04:22:03.800246-05:00","level":"INFO","msg":"writer: Close: closed","stream_id":"si59k4ph"}
+{"time":"2024-12-09T04:22:03.800486-05:00","level":"INFO","msg":"stream: closed","id":"si59k4ph"}

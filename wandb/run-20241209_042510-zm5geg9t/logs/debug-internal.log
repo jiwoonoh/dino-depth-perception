@@ -1,0 +1,9 @@
+{"time":"2024-12-09T04:25:15.916645-05:00","level":"INFO","msg":"using version","core version":"0.18.7"}
+{"time":"2024-12-09T04:25:15.916673-05:00","level":"INFO","msg":"created symlink","path":"/Users/panwapromtep/dino-depth-perception/wandb/run-20241209_042510-zm5geg9t/logs/debug-core.log"}
+{"time":"2024-12-09T04:25:16.032239-05:00","level":"INFO","msg":"created new stream","id":"zm5geg9t"}
+{"time":"2024-12-09T04:25:16.0323-05:00","level":"INFO","msg":"stream: started","id":"zm5geg9t"}
+{"time":"2024-12-09T04:25:16.032292-05:00","level":"INFO","msg":"handler: started","stream_id":"zm5geg9t"}
+{"time":"2024-12-09T04:25:16.032297-05:00","level":"INFO","msg":"writer: Do: started","stream_id":"zm5geg9t"}
+{"time":"2024-12-09T04:25:16.03232-05:00","level":"INFO","msg":"sender: started","stream_id":"zm5geg9t"}
+{"time":"2024-12-09T04:25:18.384832-05:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2024-12-09T04:25:18.793031-05:00","level":"INFO","msg":"Pausing system monitor"}

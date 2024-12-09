@@ -301,8 +301,8 @@ def compute_loss(pred_depth, pred_poses, tgt_image, src_image_stack, intrinsics,
         curr_depth = pred_depth[s]  # [B, 1, H, W]
 
         # Print current depth shape
-        print(f"Scale {s}:")
-        print(f"  curr_depth shape: {curr_depth.shape}")  # Should be [B, 1, H, W]
+        # print(f"Scale {s}:")
+        # print(f"  curr_depth shape: {curr_depth.shape}")  # Should be [B, 1, H, W]
 
         # Check if depth_map[s] is correctly batched
         if curr_depth.dim() != 4 or curr_depth.shape[1] != 1:
@@ -318,19 +318,19 @@ def compute_loss(pred_depth, pred_poses, tgt_image, src_image_stack, intrinsics,
         )  # [B, 3*num_source, H', W']
 
         # Print shapes to verify alignment
-        print(f"  curr_tgt_image shape: {curr_tgt_image.shape}")
-        print(f"  curr_src_image_stack shape: {curr_src_image_stack.shape}")
+        # print(f"  curr_tgt_image shape: {curr_tgt_image.shape}")
+        # print(f"  curr_src_image_stack shape: {curr_src_image_stack.shape}")
 
         # Check if depth matches the image dimensions
         if curr_depth.shape[2:] != curr_tgt_image.shape[2:]:
-            print(f"  Resizing curr_depth from {curr_depth.shape[2:]} to {curr_tgt_image.shape[2:]}")
+            # print(f"  Resizing curr_depth from {curr_depth.shape[2:]} to {curr_tgt_image.shape[2:]}")
             curr_depth = F.interpolate(
                 curr_depth,
                 size=curr_tgt_image.shape[2:],
                 mode='bilinear',
                 align_corners=False
             )  # [B, 1, H', W']
-            print(f"  Resized curr_depth shape: {curr_depth.shape}")
+            # print(f"  Resized curr_depth shape: {curr_depth.shape}")
 
         # Iterate over each source
         for i in range(num_source):
@@ -346,7 +346,7 @@ def compute_loss(pred_depth, pred_poses, tgt_image, src_image_stack, intrinsics,
                 pose = pred_poses[:, i, :]  # [B, 6]
 
             # Debug: Print pose shape
-            print(f"  Source {i}: pose shape: {pose.shape}")
+            # print(f"  Source {i}: pose shape: {pose.shape}")
 
             # Warp the source image to the target frame
             warped_image = projective_inverse_warp(src_image, curr_depth.squeeze(1), pose, intrinsics)  # [B, 3, H', W']
@@ -367,4 +367,4 @@ def compute_loss(pred_depth, pred_poses, tgt_image, src_image_stack, intrinsics,
     # Combine photometric and smoothness loss
     total_loss = photometric_loss + smooth_weight * smoothness_loss  # Scalar
 
-    return total_loss, photometric_loss, smoothness_loss
+    return total_loss #, photometric_loss, smoothness_loss

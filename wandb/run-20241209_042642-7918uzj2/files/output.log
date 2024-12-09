@@ -1,0 +1,460 @@
+Epoch 1/10:   0%|          | 0/50 [00:00<?, ?it/s]/Users/panwapromtep/dino-depth-perception/dataset.py:46: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  data = torch.load(self.file_path)
+torch.Size([2, 6])
+tensor([[ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540],
+        [ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+Epoch 1/10:   8%|▊         | 4/50 [00:01<00:13,  3.42it/s, loss=1.25]
+torch.Size([2, 6])
+tensor([[ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540],
+        [ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540],
+        [ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540],
+        [ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540],
+        [ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540],
+        [ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540],
+        [ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540],
+        [ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540],
+        [ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540],
+        [ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540],
+        [ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540],
+        [ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540],
+        [ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540],
+        [ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540],
+        [ 0.0340,  0.0021, -0.0253,  0.0326,  0.0366,  0.0540]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.0382,  0.0408, -0.0259,  0.0315,  0.0376,  0.0440],
+        [ 0.0382,  0.0408, -0.0259,  0.0315,  0.0376,  0.0440]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.0438,  0.0798, -0.0251,  0.0304,  0.0378,  0.0361],
+        [ 0.0438,  0.0798, -0.0251,  0.0304,  0.0378,  0.0361]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.0523,  0.1350, -0.0224,  0.0293,  0.0366,  0.0282],
+        [ 0.0523,  0.1350, -0.0224,  0.0293,  0.0366,  0.0282]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.0650,  0.2198, -0.0177,  0.0270,  0.0344,  0.0170],
+        [ 0.0650,  0.2198, -0.0177,  0.0270,  0.0344,  0.0170]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.0827,  0.3437, -0.0093,  0.0235,  0.0304,  0.0006],
+        [ 0.0827,  0.3437, -0.0093,  0.0235,  0.0304,  0.0006]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.1059,  0.5139,  0.0037,  0.0194,  0.0250, -0.0221],
+        [ 0.1059,  0.5139,  0.0037,  0.0194,  0.0250, -0.0221]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.1347,  0.7340,  0.0225,  0.0141,  0.0179, -0.0520],
+        [ 0.1347,  0.7340,  0.0225,  0.0141,  0.0179, -0.0520]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.1693,  1.0061,  0.0479,  0.0079,  0.0088, -0.0890],
+        [ 0.1693,  1.0061,  0.0479,  0.0079,  0.0088, -0.0890]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 2.0957e-01,  1.3299e+00,  8.0179e-02,  1.0056e-03, -2.4243e-03,
+         -1.3306e-01],
+        [ 2.0957e-01,  1.3299e+00,  8.0179e-02,  1.0056e-03, -2.4243e-03,
+         -1.3306e-01]], grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.3339,  3.2048,  0.2735, -0.1065, -0.0096, -1.4821],
+        [ 0.3339,  3.2048,  0.2735, -0.1065, -0.0096, -1.4821]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.5120,  6.9675,  0.7285, -0.4103,  0.0329, -5.0849],
+        [ 0.5120,  6.9675,  0.7285, -0.4103,  0.0329, -5.0849]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[  0.7865,  19.6402,   2.5339,  -1.8186,   0.4118, -19.7343],
+        [  0.7865,  19.6402,   2.5339,  -1.8186,   0.4118, -19.7343]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[  0.5464,  64.4035,   9.6410,  -8.7756,   3.6277, -80.7438],
+        [  0.5464,  64.4035,   9.6410,  -8.7756,   3.6277, -80.7438]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[  -0.2761,  108.4212,   17.9723,  -11.0469,    9.2736, -146.3889],
+        [  -0.2761,  108.4212,   17.9723,  -11.0469,    9.2736, -146.3889]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 4.7804e-02,  9.5964e+01,  1.7376e+01, -4.7418e+00,  1.3363e+01,
+         -1.2764e+02],
+        [ 4.7804e-02,  9.5964e+01,  1.7376e+01, -4.7418e+00,  1.3363e+01,
+         -1.2764e+02]], grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[  0.5910,  56.8343,  11.1089,   0.3253,  10.6473, -71.2633],
+        [  0.5910,  56.8343,  11.1089,   0.3253,  10.6473, -71.2633]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[  0.7204,  37.5992,   7.5630,   2.0343,   8.4955, -45.6427],
+        [  0.7204,  37.5992,   7.5630,   2.0343,   8.4955, -45.6427]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[  0.5220,  19.8599,   3.9594,   2.0866,   4.9055, -23.0657],
+        [  0.5220,  19.8599,   3.9594,   2.0866,   4.9055, -23.0657]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[  0.5450,  19.0924,   3.9011,   2.5316,   5.3938, -22.1194],
+        [  0.5450,  19.0924,   3.9011,   2.5316,   5.3938, -22.1194]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[  0.6633,  22.7533,   4.8739,   3.4693,   7.1778, -26.5520],
+        [  0.6633,  22.7533,   4.8739,   3.4693,   7.1778, -26.5520]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[  0.8376,  28.2380,   6.3438,   4.7853,   9.7548, -33.2061],
+        [  0.8376,  28.2380,   6.3438,   4.7853,   9.7548, -33.2061]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[  0.8492,  27.2450,   6.2024,   5.2301,   9.8689, -31.9472],
+        [  0.8492,  27.2450,   6.2024,   5.2301,   9.8689, -31.9472]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[  0.9730,  30.6297,   7.0961,   6.3845,  11.6787, -36.0645],
+        [  0.9730,  30.6297,   7.0961,   6.3845,  11.6787, -36.0645]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[  1.3091,  41.7497,   9.7702,   9.2981,  16.8114, -49.9193],
+        [  1.3091,  41.7497,   9.7702,   9.2981,  16.8114, -49.9193]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[  1.7061,  54.7335,  12.4410,  13.1749,  23.0493, -66.7335],
+        [  1.7061,  54.7335,  12.4410,  13.1749,  23.0493, -66.7335]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[  1.9802,  63.2576,  13.7843,  16.1030,  27.6084, -78.4151],
+        [  1.9802,  63.2576,  13.7843,  16.1030,  27.6084, -78.4151]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[   2.5868,   82.7774,   17.2159,   23.4561,   37.1943, -104.8222],
+        [   2.5868,   82.7774,   17.2159,   23.4561,   37.1943, -104.8222]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[  2.3796,  77.7802,  16.8842,  21.3314,  33.7227, -97.9644],
+        [  2.3796,  77.7802,  16.8842,  21.3314,  33.7227, -97.9644]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[  1.2636,  41.7750,   9.8978,   9.5097,  16.7680, -49.9068],
+        [  1.2636,  41.7750,   9.8978,   9.5097,  16.7680, -49.9068]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[  0.6992,  23.7862,   6.0232,   4.4375,   8.8482, -27.1372],
+        [  0.6992,  23.7862,   6.0232,   4.4375,   8.8482, -27.1372]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[  0.3983,  14.3201,   3.8302,   2.1504,   4.9770, -15.7043],
+        [  0.3983,  14.3201,   3.8302,   2.1504,   4.9770, -15.7043]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.2431,  8.7808,  2.4611,  1.0260,  2.8619, -9.2407],
+        [ 0.2431,  8.7808,  2.4611,  1.0260,  2.8619, -9.2407]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.1523,  5.6486,  1.6369,  0.5038,  1.7386, -5.7296],
+        [ 0.1523,  5.6486,  1.6369,  0.5038,  1.7386, -5.7296]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.1020,  3.4585,  1.0243,  0.2302,  1.0072, -3.3570],
+        [ 0.1020,  3.4585,  1.0243,  0.2302,  1.0072, -3.3570]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.0738,  2.1918,  0.6565,  0.1068,  0.6137, -2.0384],
+        [ 0.0738,  2.1918,  0.6565,  0.1068,  0.6137, -2.0384]],
+       grad_fn=<MeanBackward1>)
+Scale 0:
+  curr_depth shape: torch.Size([2, 1, 224, 224])
+  curr_tgt_image shape: torch.Size([2, 3, 224, 224])
+  curr_src_image_stack shape: torch.Size([2, 3, 224, 224])
+  Source 0: pose shape: torch.Size([2, 6])
+torch.Size([2, 6])
+tensor([[ 0.0578,  1.4854,  0.4471,  0.0518,  0.4073, -1.3250],
+        [ 0.0578,  1.4854,  0.4471,  0.0518,  0.4073, -1.3250]])
+Scale 0:
+  curr_depth shape: torch.Size([224, 224])

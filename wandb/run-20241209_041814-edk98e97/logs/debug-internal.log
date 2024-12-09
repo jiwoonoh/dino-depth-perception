@@ -1,0 +1,17 @@
+{"time":"2024-12-09T04:18:17.174649-05:00","level":"INFO","msg":"using version","core version":"0.18.7"}
+{"time":"2024-12-09T04:18:17.174706-05:00","level":"INFO","msg":"created symlink","path":"/Users/panwapromtep/dino-depth-perception/wandb/run-20241209_041814-edk98e97/logs/debug-core.log"}
+{"time":"2024-12-09T04:18:17.287349-05:00","level":"INFO","msg":"created new stream","id":"edk98e97"}
+{"time":"2024-12-09T04:18:17.287402-05:00","level":"INFO","msg":"stream: started","id":"edk98e97"}
+{"time":"2024-12-09T04:18:17.287408-05:00","level":"INFO","msg":"handler: started","stream_id":"edk98e97"}
+{"time":"2024-12-09T04:18:17.287429-05:00","level":"INFO","msg":"writer: Do: started","stream_id":"edk98e97"}
+{"time":"2024-12-09T04:18:17.28748-05:00","level":"INFO","msg":"sender: started","stream_id":"edk98e97"}
+{"time":"2024-12-09T04:18:17.598164-05:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2024-12-09T04:20:00.178413-05:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2024-12-09T04:20:00.178988-05:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2024-12-09T04:20:01.18103-05:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"saving job artifact","runtime_seconds":0.3758715},{"desc":"uploading wandb-summary.json","runtime_seconds":0.37273825,"progress":"26B/26B"}],"total_operations":2}}
+{"time":"2024-12-09T04:20:01.69843-05:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2024-12-09T04:20:03.170556-05:00","level":"INFO","msg":"stream: closing","id":"edk98e97"}
+{"time":"2024-12-09T04:20:03.170577-05:00","level":"INFO","msg":"handler: closed","stream_id":"edk98e97"}
+{"time":"2024-12-09T04:20:03.17061-05:00","level":"INFO","msg":"writer: Close: closed","stream_id":"edk98e97"}
+{"time":"2024-12-09T04:20:03.170674-05:00","level":"INFO","msg":"sender: closed","stream_id":"edk98e97"}
+{"time":"2024-12-09T04:20:03.170704-05:00","level":"INFO","msg":"stream: closed","id":"edk98e97"}

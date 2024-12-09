@@ -1,0 +1,37 @@
+{
+  "os":  "macOS-13.7.1-arm64-arm-64bit",
+  "python":  "3.12.5",
+  "startedAt":  "2024-12-09T09:35:23.593937Z",
+  "program":  "/Users/panwapromtep/dino-depth-perception/model_trial.ipynb",
+  "git":  {
+    "remote":  "https://github.com/jiwoonoh/dino-depth-perception.git",
+    "commit":  "23b061ace3a46ce67e00c652bb8aebcc3df16205"
+  },
+  "root":  "/Users/panwapromtep/dino-depth-perception",
+  "host":  "Panwas-MacBook-Air.local",
+  "username":  "panwapromtep",
+  "executable":  "/Users/panwapromtep/miniforge3/envs/torch/bin/python",
+  "codePathLocal":  "model_trial.ipynb",
+  "cpu_count":  8,
+  "cpu_count_logical":  8,
+  "disk":  {
+    "/":  {
+      "total":  "494384795648",
+      "used":  "479785922560"
+    }
+  },
+  "memory":  {
+    "total":  "17179869184"
+  },
+  "cpu":  {
+    "count":  8,
+    "countLogical":  8
+  },
+  "apple":  {
+    "name":  "Apple M1",
+    "ecpuCores":  4,
+    "pcpuCores":  4,
+    "gpuCores":  8,
+    "memoryGb":  16
+  }
+}

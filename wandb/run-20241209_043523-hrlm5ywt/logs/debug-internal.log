@@ -1,0 +1,27 @@
+{"time":"2024-12-09T04:35:23.594793-05:00","level":"INFO","msg":"using version","core version":"0.18.7"}
+{"time":"2024-12-09T04:35:23.594819-05:00","level":"INFO","msg":"created symlink","path":"/Users/panwapromtep/dino-depth-perception/wandb/run-20241209_043523-hrlm5ywt/logs/debug-core.log"}
+{"time":"2024-12-09T04:35:23.703408-05:00","level":"INFO","msg":"created new stream","id":"hrlm5ywt"}
+{"time":"2024-12-09T04:35:23.703447-05:00","level":"INFO","msg":"stream: started","id":"hrlm5ywt"}
+{"time":"2024-12-09T04:35:23.703444-05:00","level":"INFO","msg":"writer: Do: started","stream_id":"hrlm5ywt"}
+{"time":"2024-12-09T04:35:23.703452-05:00","level":"INFO","msg":"handler: started","stream_id":"hrlm5ywt"}
+{"time":"2024-12-09T04:35:23.703494-05:00","level":"INFO","msg":"sender: started","stream_id":"hrlm5ywt"}
+{"time":"2024-12-09T04:35:36.880448-05:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2024-12-09T04:35:37.855252-05:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2024-12-09T04:36:44.039783-05:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2024-12-09T04:36:44.04364-05:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2024-12-09T04:36:45.882614-05:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2024-12-09T04:36:45.887698-05:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2024-12-09T04:36:52.790671-05:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2024-12-09T04:36:52.79487-05:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2024-12-09T04:36:53.475089-05:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2024-12-09T04:36:53.478518-05:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2024-12-09T04:36:57.158029-05:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2024-12-09T04:36:57.228419-05:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2024-12-09T04:36:57.22928-05:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2024-12-09T04:36:58.233245-05:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"updating run config","runtime_seconds":1.0057042919999999}],"total_operations":1}}
+{"time":"2024-12-09T04:37:09.265104-05:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2024-12-09T04:37:14.042076-05:00","level":"INFO","msg":"stream: closing","id":"hrlm5ywt"}
+{"time":"2024-12-09T04:37:14.04218-05:00","level":"INFO","msg":"writer: Close: closed","stream_id":"hrlm5ywt"}
+{"time":"2024-12-09T04:37:14.042197-05:00","level":"INFO","msg":"sender: closed","stream_id":"hrlm5ywt"}
+{"time":"2024-12-09T04:37:14.042382-05:00","level":"INFO","msg":"handler: closed","stream_id":"hrlm5ywt"}
+{"time":"2024-12-09T04:37:14.042637-05:00","level":"INFO","msg":"stream: closed","id":"hrlm5ywt"}

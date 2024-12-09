@@ -45,8 +45,8 @@ class PoseNet(nn.Module):
 
         # Average spatial dimensions and reshape
         pose_avg = torch.mean(pose_pred, dim=(2, 3))  # Shape: [batch_size, 6 * num_source]
-        print(pose_avg.shape)
-        print(pose_avg)
+        # print(pose_avg.shape)
+        # print(pose_avg)
         pose_final = 0.01 * pose_avg #.view(-1, self.num_source, 6)  # Shape: [batch_size, num_source, 6]
 
         return pose_final
